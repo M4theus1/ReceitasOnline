@@ -14,4 +14,5 @@ public interface IReceitaRepositorio {
 	void remover(int id);
 	 // Método para listar todas as receitas
 	List<Receita> listarTodas();
+	List<Receita> listarTodos();
 }

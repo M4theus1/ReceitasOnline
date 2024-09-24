@@ -1,48 +1,39 @@
 package receitasOnline.Repositorio;
-import java.util.ArrayList;
-import java.util.List;
 
 import receitasOnline.Entidades.Usuario;
+import receitasOnline.Estruturas.ListaEncadeada;
 
-//Implementação do repositório de usuários
-public class UsuarioRepositorio implements IUsuarioRepositorio{
-	
-	 private List<Usuario> usuarios = new ArrayList<>();// Lista de usuários
+import java.util.List;
 
-	// Método para adicionar um usuário ao repositório
-	    @Override
-	    public void adicionar(Usuario usuario) {
-	        usuarios.add(usuario);
-	    }
+public class UsuarioRepositorio implements IUsuarioRepositorio {
+    private ListaEncadeada<Usuario> listaUsuarios;
 
-	 // Método para buscar um usuário pelo ID
-	    @Override
-	    public Usuario buscar(int id) {
-	        return usuarios.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-	    }
+    public UsuarioRepositorio() {
+        this.listaUsuarios = new ListaEncadeada<>();
+    }
 
-	    // Método para atualizar as informações de um usuário
-	    @Override
-	    public void atualizar(Usuario usuario) {
-	        Usuario u = buscar(usuario.getId());
-	        if (u != null) {
-	            usuarios.remove(u);
-	            usuarios.add(usuario);
-	        }
-	    }
+    @Override
+    public void adicionar(Usuario usuario) {
+        listaUsuarios.adicionar(usuario);
+    }
 
-	 // Método para remover um usuário pelo ID
-	    @Override
-	    public void remover(int id) {
-	        Usuario u = buscar(id);
-	        if (u != null) {
-	            usuarios.remove(u);
-	        }
-	    }
+    @Override
+    public Usuario buscar(int id) {
+        return listaUsuarios.buscar(id);
+    }
 
-	 // Método para listar todos os usuários
-	    @Override
-	    public List<Usuario> listarTodos() {
-	        return new ArrayList<>(usuarios);
-	    }
+    @Override
+    public void atualizar(Usuario usuario) {
+        listaUsuarios.atualizar(usuario);
+    }
+
+    @Override
+    public void remover(int id) {
+        listaUsuarios.remover(id);
+    }
+
+    @Override
+    public List<Usuario> listarTodos() {
+        return listaUsuarios.listar();
+    }
 }

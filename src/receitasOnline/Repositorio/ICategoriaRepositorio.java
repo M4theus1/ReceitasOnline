@@ -14,4 +14,5 @@ public interface ICategoriaRepositorio {
 	void remover(int id);
 	// Método para listar todas as categorias
 	List<Categoria> listarTodas();
+	List<Categoria> listarTodos();
 }	

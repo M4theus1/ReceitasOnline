@@ -15,4 +15,5 @@ public interface IAvaliacaoRepositorio {
 	void remover(int id);
 	// Método para listar todas as avaliações
 	List<Avaliacao> listarTodas();
+	List<Avaliacao> listarTodos();
 }

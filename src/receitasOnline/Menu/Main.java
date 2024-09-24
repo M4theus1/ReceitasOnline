@@ -1,33 +1,38 @@
 package receitasOnline.Menu;
+
 import java.util.Scanner;
 import java.util.List;
 import receitasOnline.Servicos.*;
 import receitasOnline.Entidades.*;
 import receitasOnline.Repositorio.*;
+import receitasOnline.Estruturas.ListaEncadeada; // Importando a lista encadeada
 
-//Classe principal que contém o método main e os menus de interação com o usuário
-public class Main {	
-	// Scanner para entrada do usuário
-	private static Scanner scanner = new Scanner(System.in);
-	// Serviços para lidar com usuários, avaliações, receitas, ingredientes e categorias
-	private static IUsuarioServico usuarioServico = new UsuarioServico(new UsuarioRepositorio());
-	private static IAvaliacaoServico avaliacaoServico = new AvaliacaoServico(new AvaliacaoRepositorio());
+// Classe principal que contém o método main e os menus de interação com o usuário
+public class Main {    
+    // Scanner para entrada do usuário
+    private static Scanner scanner = new Scanner(System.in);
+    
+    // Serviços para lidar com usuários, avaliações, receitas, ingredientes e categorias
+    private static IUsuarioServico usuarioServico = new UsuarioServico(new UsuarioRepositorio());
+    private static IAvaliacaoServico avaliacaoServico = new AvaliacaoServico(new AvaliacaoRepositorio());
     private static IReceitaServico receitaServico = new ReceitaServico(new ReceitaRepositorio());
     private static IIngredienteServico ingredienteServico = new IngredienteServico(new IngredienteRepositorio());
     private static ICategoriaServico categoriaServico = new CategoriaServico(new CategoriaRepositorio());
-	
+
+    // Lista encadeada para armazenar receitas
+    private static ListaEncadeada<Receita> listaReceitas = new ListaEncadeada<>();
+
     // Método principal que inicia o programa e exibe o menu principal
     public static void main(String[] args) {
-    	while(true) {
-    		 // Exibe o menu principal
-    		System.out.println("Menu:");
+        while (true) {
+            // Exibe o menu principal
+            System.out.println("Menu:");
             System.out.println("1. Usuários");
             System.out.println("2. Avaliações");
             System.out.println("3. Receitas");
             System.out.println("4. Ingredientes");
             System.out.println("5. Categorias");
             System.out.println("6. Sair");
-            
             // Lê a opção escolhida pelo usuário
             int opcao = scanner.nextInt();
             scanner.nextLine();
@@ -35,13 +40,13 @@ public class Main {
             // Executa a ação correspondente à opção escolhida
             switch (opcao) {
                 case 1:
-                    menuUsuarios();// Menu de interação com usuários
+                    menuUsuarios(); // Menu de interação com usuários
                     break;
                 case 2:
-                    menuAvaliacoes();// Menu de interação com avaliações
+                    menuAvaliacoes(); // Menu de interação com avaliações
                     break;
                 case 3:
-                    menuReceitas();// Menu de interação com receitas
+                    menuReceitas(); // Menu de interação com receitas
                     break;
                 case 4:
                     menuIngredientes(); // Menu de interação com ingredientes
@@ -50,15 +55,15 @@ public class Main {
                     menuCategorias(); // Menu de interação com categorias
                     break;
                 case 6:
-                    System.exit(0);// Encerra o programa
+                    System.exit(0); // Encerra o programa
                     break;
                 default:
-                    System.out.println("Opção inválida.");// Mensagem de opção inválida
-    	}
+                    System.out.println("Opção inválida."); // Mensagem de opção inválida
+            }
+        }
     }
-}
-    
- // Menu de interação com usuários
+
+    // Menu de interação com usuários
     private static void menuUsuarios() {
         System.out.println("Menu de Usuários:");
         System.out.println("1. Adicionar");
@@ -71,7 +76,7 @@ public class Main {
         int opcao = scanner.nextInt();
         scanner.nextLine();
 
-     // Executa a ação correspondente à opção escolhida
+        // Executa a ação correspondente à opção escolhida
         switch (opcao) {
             case 1:
                 System.out.println("Digite o ID:");
@@ -82,7 +87,6 @@ public class Main {
                 usuarioServico.adicionarUsuario(new Usuario(id, nome));
                 break;
             case 2:
-            	// Busca um usuário pelo ID
                 System.out.println("Digite o ID:");
                 id = scanner.nextInt();
                 Usuario usuario = usuarioServico.buscarUsuario(id);
@@ -93,7 +97,6 @@ public class Main {
                 }
                 break;
             case 3:
-            	 // Atualiza o nome de um usuário pelo ID
                 System.out.println("Digite o ID:");
                 id = scanner.nextInt();
                 scanner.nextLine();
@@ -102,13 +105,11 @@ public class Main {
                 usuarioServico.atualizarUsuario(new Usuario(id, nome));
                 break;
             case 4:
-            	// Remove um usuário pelo ID
                 System.out.println("Digite o ID:");
                 id = scanner.nextInt();
                 usuarioServico.removerUsuario(id);
                 break;
             case 5:
-            	// Lista todos os usuários
                 List<Usuario> usuarios = usuarioServico.listarUsuarios();
                 for (Usuario u : usuarios) {
                     System.out.println("ID: " + u.getId() + ", Nome: " + u.getNome());
@@ -116,13 +117,10 @@ public class Main {
                 break;
             default:
                 System.out.println("Opção inválida.");
-        	}
-    	}
-    
-    
- // MÉTODOS SEMELHANTES PARA OS MENUS DE AVALIAÇÕES, RECEITAS, INGREDIENTES E CATEGORIAS
-    
-    
+        }
+    }
+
+    // Menu de interação com avaliações
     private static void menuAvaliacoes() {
         System.out.println("Menu de Avaliações:");
         System.out.println("1. Adicionar");
@@ -178,8 +176,10 @@ public class Main {
                 break;
             default:
                 System.out.println("Opção inválida.");
-        	}
-    	}
+        }
+    }
+
+    // Menu de interação com receitas
     private static void menuReceitas() {
         System.out.println("Menu de Receitas:");
         System.out.println("1. Adicionar");
@@ -200,7 +200,9 @@ public class Main {
                 String nome = scanner.nextLine();
                 System.out.println("Digite a Descrição:");
                 String descricao = scanner.nextLine();
-                receitaServico.adicionarReceita(new Receita(id, nome, descricao));
+                Receita novaReceita = new Receita(id, nome, descricao);
+                receitaServico.adicionarReceita(novaReceita);
+                listaReceitas.adicionar(novaReceita); // Armazenar na lista encadeada
                 break;
             case 2:
                 System.out.println("Digite o ID:");
@@ -235,8 +237,10 @@ public class Main {
                 break;
             default:
                 System.out.println("Opção inválida.");
-        	}
-    	}
+        }
+    }
+
+    // Menu de interação com ingredientes
     private static void menuIngredientes() {
         System.out.println("Menu de Ingredientes:");
         System.out.println("1. Adicionar");
@@ -252,7 +256,6 @@ public class Main {
             case 1:
                 System.out.println("Digite o ID:");
                 int id = scanner.nextInt();
-                scanner.nextLine();
                 System.out.println("Digite o Nome:");
                 String nome = scanner.nextLine();
                 ingredienteServico.adicionarIngrediente(new Ingrediente(id, nome));
@@ -270,7 +273,6 @@ public class Main {
             case 3:
                 System.out.println("Digite o ID:");
                 id = scanner.nextInt();
-                scanner.nextLine();
                 System.out.println("Digite o Novo Nome:");
                 nome = scanner.nextLine();
                 ingredienteServico.atualizarIngrediente(new Ingrediente(id, nome));
@@ -288,8 +290,10 @@ public class Main {
                 break;
             default:
                 System.out.println("Opção inválida.");
-        	}
-    	}
+        }
+    }
+
+    // Menu de interação com categorias
     private static void menuCategorias() {
         System.out.println("Menu de Categorias:");
         System.out.println("1. Adicionar");
@@ -305,7 +309,6 @@ public class Main {
             case 1:
                 System.out.println("Digite o ID:");
                 int id = scanner.nextInt();
-                scanner.nextLine();
                 System.out.println("Digite o Nome:");
                 String nome = scanner.nextLine();
                 categoriaServico.adicionarCategoria(new Categoria(id, nome));
@@ -323,7 +326,6 @@ public class Main {
             case 3:
                 System.out.println("Digite o ID:");
                 id = scanner.nextInt();
-                scanner.nextLine();
                 System.out.println("Digite o Novo Nome:");
                 nome = scanner.nextLine();
                 categoriaServico.atualizarCategoria(new Categoria(id, nome));
@@ -343,5 +345,10 @@ public class Main {
                 System.out.println("Opção inválida.");
         }
     }
+
+    // Método para exibir todas as receitas armazenadas na lista encadeada
+    private static void exibirReceitas() {
+        System.out.println("Receitas Armazenadas:");
+        listaReceitas.listar(); // Chama o método listar da lista encadeada
     }
-    
+}
