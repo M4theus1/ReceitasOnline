@@ -1,3 +1,5 @@
+Grupo: Clerisson Teixeira, Maria Thaynara, Matheus Silva, Wagner Farias
+
 # Sistema de Receitas Online
 
 Este projeto é um sistema de receitas online, onde usuários podem compartilhar receitas, avaliar receitas existentes e deixar comentários. O sistema é organizado de forma modular com a implementação de repositórios, serviços e testes para garantir a organização e a manutenibilidade do código.
